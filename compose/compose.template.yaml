@@ -1,0 +1,16 @@
+services:
+  debian:
+    build: .
+    network_mode: host
+    volumes:
+      - ~/.ssh:/root/.ssh:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - tmux_resurrect:/root/.tmux/resurrect
+    stdin_open: true
+    tty: true
+    extra_hosts:
+      - platform-local.getruck.co.il:127.0.0.1
+
+volumes:
+  tmux_resurrect:
