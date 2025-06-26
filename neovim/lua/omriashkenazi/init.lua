@@ -1,4 +1,5 @@
 require("omriashkenazi.remap")
+require("omriashkenazi.set")
 require("omriashkenazi.packer")
 
 vim.opt.timeout = false

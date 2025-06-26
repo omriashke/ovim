@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use {
-      'nvim-telescope/telescope.nvim', tag = '0.1.8',
+      'nvim-telescope/telescope.nvim', tag = 'master',
       -- or                            , branch = '0.1.x',
       requires = { {'nvim-lua/plenary.nvim'} }
   }
@@ -21,4 +21,13 @@ return require('packer').startup(function(use)
     require('nvim-treesitter.install').update({ with_sync = true })
   end,
   }
+  use {
+	  "ThePrimeagen/harpoon",
+	  branch = "harpoon2",
+	  requires = { {"nvim-lua/plenary.nvim"} }
+  }
+
+  use { "mbbill/undotree" }
+  
+  use { "tpope/vim-fugitive" }
 end)
