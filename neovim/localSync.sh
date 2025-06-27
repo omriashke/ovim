@@ -9,4 +9,4 @@ TARGET_DIR="$HOME/.config/nvim"
 rm -rf "$TARGET_DIR"
 cp -r "$SOURCE_DIR" "$TARGET_DIR"
 
-nvim --headless +PackerClean +PackerSync +qa
+nvim --headless -c "PackerClean" -c "lua require('omriashkenazi.packer')" -c "autocmd User PackerComplete quitall" -c "PackerSync"
