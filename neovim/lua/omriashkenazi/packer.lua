@@ -34,4 +34,24 @@ return require('packer').startup(function(use)
   use { "neovim/nvim-lspconfig" }
 
   use { "mason-org/mason.nvim" }
+
+use({
+  'saghen/blink.cmp',
+  requires = { 'rafamadriz/friendly-snippets' }, -- optional snippets
+  tag = 'v1.*', -- use prebuilt binaries via tag
+  config = function()
+    require('blink.cmp').setup({
+      keymap = { preset = 'default' },
+      appearance = {
+        nerd_font_variant = 'mono',
+      },
+      completion = {
+        documentation = { auto_show = true },
+      },
+      fuzzy = {
+        implementation = "prefer_rust_with_warning",
+      },
+    })
+  end
+})
 end)
