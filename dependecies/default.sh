@@ -3,7 +3,7 @@ set -e
 
 apt update
 
-apt install -y ninja-build gettext cmake curl build-essential ripgrep fd-find
+apt install -y ninja-build gettext make cmake curl build-essential ripgrep fd-find
 
 # Install NVM
 export NVM_DIR="$HOME/.nvm"

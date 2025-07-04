@@ -25,7 +25,7 @@ vim.keymap.set("v", "<leader>d", "\"_d")
 
 vim.keymap.set("n", "Q", "<nop>")
 
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux new tmux-sessionizer<CR>")
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-a>', '<C-a>', { noremap = true })
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -38,25 +38,3 @@ vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
-
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    local bufnr = ev.buf
-    local opts = { buffer = bufnr, remap = false }
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if not client then return end
-
-    ---@diagnostic disable-next-line: missing-parameter
-    if client.supports_method('textDocument/formatting') then
-      -- Format the current buffer on save
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        buffer = ev.buf,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = ev.buf, id = client.id })
-        end
-      })
-    end
-  end
-})

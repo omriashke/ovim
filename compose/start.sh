@@ -25,7 +25,7 @@ cd "$DEV_DIR"
 # Run docker compose with or without --build flag
 if [ -n "$BUILD_FLAG" ]; then
     echo "Building and starting containers..."
-    docker compose build --no-cache
+    docker compose build
     docker compose up -d
 else
     docker compose up -d

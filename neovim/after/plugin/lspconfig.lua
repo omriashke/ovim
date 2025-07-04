@@ -1,5 +1,5 @@
 vim.diagnostic.config({
-  virtual_text = true,  -- Shows diagnostics as virtual text
+  virtual_text = true, -- Shows diagnostics as virtual text
 })
 
 -- Lua_ls
@@ -8,8 +8,8 @@ vim.lsp.config('lua_ls', {
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
       if
-        path ~= vim.fn.stdpath('config')
-        and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+          path ~= vim.fn.stdpath('config')
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
       then
         return
       end
@@ -36,3 +36,6 @@ vim.lsp.config('lua_ls', {
   }
 })
 vim.lsp.enable('lua_ls')
+
+-- ts_ls
+vim.lsp.enable('ts_ls')
