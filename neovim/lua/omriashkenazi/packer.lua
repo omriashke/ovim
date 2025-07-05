@@ -49,7 +49,7 @@ return require('packer').startup(function(use)
           documentation = { auto_show = true },
         },
         fuzzy = {
-          implementation = "prefer_rust_with_warning",
+          implementation = "prefer_rust",
         },
       })
     end

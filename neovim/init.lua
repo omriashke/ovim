@@ -1,1 +1,1 @@
-require("omriashkenazi")
+require('omriashkenazi')

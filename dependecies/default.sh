@@ -15,6 +15,8 @@ nvm install 22
 nvm alias default 22
 nvm use 22
 
+npm install -g corepack
+
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source ~/.cargo/env
 
