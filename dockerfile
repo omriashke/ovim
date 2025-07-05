@@ -43,6 +43,8 @@ COPY tmux/tmux.conf /root/.config/tmux/tmux.conf
 
 RUN /root/.tmux/plugins/tpm/scripts/install_plugins.sh
 
+RUN find /tmp -mindepth 1 -delete
+
 WORKDIR /root
 
 RUN apt update && apt install -y bash locales && \
