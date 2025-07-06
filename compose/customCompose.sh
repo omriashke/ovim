@@ -7,7 +7,7 @@ CALL_BASENAME="$(basename "$CALL_DIR")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Load paths from workdirs.txt
-mapfile -t paths < "$SCRIPT_DIR/../workdirs.txt"
+mapfile -t paths < "/root/.config/workdirs.txt"
 
 # Find match by basename
 MATCHED_PATH=""
@@ -28,7 +28,6 @@ fi
 COMPOSE_FILE=""
 for candidate in "$CALL_DIR"/*.yml "$CALL_DIR"/*.yaml; do
   [[ ! -e "$candidate" ]] && continue
-
   filename="$(basename "$candidate")"
   if [[ "$filename" =~ compose\.ya?ml$ || "$filename" == docker-compose.* ]]; then
     COMPOSE_FILE="$filename"
@@ -42,6 +41,9 @@ if [[ -z "$COMPOSE_FILE" ]]; then
   exit 1
 fi
 
-# Run Docker Compose
-echo "Running: docker compose -f ./$COMPOSE_FILE --project-directory $MATCHED_PATH up"
-docker compose -f "./$COMPOSE_FILE" --project-directory "$MATCHED_PATH" up
+# Use 'up' as default command if no arguments provided
+COMPOSE_ARGS=("${@:-up}")
+
+# Run Docker Compose with all provided arguments
+echo "Running: docker compose -f ./$COMPOSE_FILE --project-directory $MATCHED_PATH ${COMPOSE_ARGS[*]}"
+docker compose -f "./$COMPOSE_FILE" --project-directory "$MATCHED_PATH" "${COMPOSE_ARGS[@]}"

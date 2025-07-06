@@ -8,6 +8,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - tmux_resurrect:/root/.tmux/resurrect
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./compose/workdirs.txt:/root/.config/workdirs.txt
     stdin_open: true
     tty: true
     extra_hosts:

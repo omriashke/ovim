@@ -45,6 +45,11 @@ RUN /root/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 RUN find /tmp -mindepth 1 -delete
 
+# app integrations
+COPY ./compose/customCompose.sh /root/.config/customCompose.sh
+
+RUN chmod +x /root/.config/customCompose.sh
+
 WORKDIR /root
 
 RUN apt update && apt install -y bash locales && \
