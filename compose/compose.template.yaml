@@ -1,6 +1,8 @@
 services:
   debian:
-    build: .
+    build:
+      context: .
+    image: vimdev-debian:latest
     network_mode: host
     volumes:
       - ~/.ssh:/root/.ssh:ro

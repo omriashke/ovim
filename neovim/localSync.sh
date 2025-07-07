@@ -7,7 +7,6 @@ TARGET_DIR="$HOME/.config/nvim"
 rm -f "$TARGET_DIR/init.lua"
 rm -rf "$TARGET_DIR/lua"
 rm -rf "$TARGET_DIR/after"
-rm -f /root/.local/share/nvim/.packer_first_run
 
 # Copy only the specific files and directories
 cp "$SOURCE_DIR/init.lua" "$TARGET_DIR/init.lua" 2>/dev/null || echo "Warning: init.lua not found in source"

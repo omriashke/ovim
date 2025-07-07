@@ -38,7 +38,6 @@ return require('packer').startup(function(use)
   use({
     'saghen/blink.cmp',
     requires = { 'rafamadriz/friendly-snippets' }, -- optional snippets
-    tag = 'v1.*',                                  -- use prebuilt binaries via tag
     config = function()
       require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -49,7 +48,7 @@ return require('packer').startup(function(use)
           documentation = { auto_show = true },
         },
         fuzzy = {
-          implementation = "prefer_rust",
+          implementation = "prefer_rust_with_warning",
         },
       })
     end

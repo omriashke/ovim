@@ -27,3 +27,7 @@ make
 cargo build --release
 
 ln -s /opt/tree-sitter/target/release/tree-sitter /usr/local/bin/tree-sitter
+
+cd /root/.local/share/nvim/site/pack/packer/start/blink.cmp
+
+cargo build --release
