@@ -1,4 +1,5 @@
 export PATH="/usr/local/bin:$PATH"
+export USER=$(whoami)
 
 export DEV_DIR="$HOME/VimDev"
 

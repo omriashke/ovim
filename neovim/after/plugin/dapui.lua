@@ -27,3 +27,23 @@ end
 dap.listeners.before.event_exited.dapui_config = function()
   dapui.close()
 end
+
+dap.adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = '/root/.local/share/nvim/mason/bin/js-debug-adapter',
+    args = { "${port}" },
+  }
+}
+dap.configurations.typescript = {
+  {
+    type = "pwa-node",
+    request = "attach",
+    name = "Attach",
+    processId = require('dap.utils').pick_process,
+    cwd = "${workspaceFolder}",
+    sourceMaps = true,
+  },
+}
