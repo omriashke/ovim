@@ -1,7 +1,22 @@
 #!/bin/bash
 set -euo pipefail
 
-WORKDIRS_FILE="$DEV_DIR/compose/workdirs.txt"
+SHOW_FULL_PATH=false
+
+# Parse arguments
+for arg in "$@"; do
+    case "$arg" in
+        --path)
+            SHOW_FULL_PATH=true
+            ;;
+        *)
+            echo "Unknown argument: $arg"
+            exit 1
+            ;;
+    esac
+done
+
+WORKDIRS_FILE="${DEV_DIR:-}/compose/workdirs.txt"
 
 # Check if file exists or is empty
 if [ ! -f "$WORKDIRS_FILE" ] || [ ! -s "$WORKDIRS_FILE" ]; then
@@ -9,10 +24,12 @@ if [ ! -f "$WORKDIRS_FILE" ] || [ ! -s "$WORKDIRS_FILE" ]; then
     exit 0
 fi
 
-# Display workdirs compactly
-count=$(wc -l < "$WORKDIRS_FILE")
-printf "Workdirs (%d): " "$count"
+# Display workdirs line-by-line
+count=$(wc -l < "$WORKDIRS_FILE" | xargs)
+echo "Workdirs ($count):"
 while IFS= read -r dir; do
-    [[ -n "$dir" ]] && printf "%s%s " "$([ -d "$dir" ] && echo "✓" || echo "✗")" "$(basename "$dir")"
+    [[ -z "$dir" ]] && continue
+    STATUS=$([ -d "$dir" ] && echo "✓" || echo "✗")
+    NAME=$([[ "$SHOW_FULL_PATH" == true ]] && echo "$dir" || basename "$dir")
+    echo "  $STATUS $NAME"
 done < "$WORKDIRS_FILE"
-echo
