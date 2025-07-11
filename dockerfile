@@ -58,6 +58,10 @@ RUN apt update && apt install -y bash locales && \
 
 COPY .bashrc /root/.bashrc
 
+COPY .env /root/.env
+
+RUN source /root/.env
+
 SHELL ["/bin/bash", "-c"]
 
 ENV TERM xterm-256color

@@ -40,7 +40,7 @@ return require('packer').startup(function(use)
 
   use({
     'saghen/blink.cmp',
-    requires = { 'rafamadriz/friendly-snippets' }, -- optional snippets
+    requires = { 'rafamadriz/friendly-snippets', 'Kaiser-Yang/blink-cmp-avante', }, -- optional snippets
     config = function()
       require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -53,11 +53,52 @@ return require('packer').startup(function(use)
         fuzzy = {
           implementation = "prefer_rust_with_warning",
         },
+        sources = {
+          default = { 'avante', 'lsp', 'path', 'luasnip', 'buffer' },
+          providers = {
+            avante = {
+              module = 'blink-cmp-avante',
+              name = 'Avante',
+              opts = {
+                -- options for blink-cmp-avante
+              }
+            }
+          }
+        }
       })
     end
   })
   use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
 
   use { 'WhoIsSethDaniel/mason-tool-installer.nvim' }
-end)
 
+  use {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
+  }
+
+  -- Required plugins
+  use 'nvim-lua/plenary.nvim'
+  use 'MunifTanjim/nui.nvim'
+  use 'MeanderingProgrammer/render-markdown.nvim'
+
+  -- Optional dependencies
+  use 'hrsh7th/nvim-cmp'
+  use 'echasnovski/mini.icons'
+  use 'HakonHarnes/img-clip.nvim'
+  use 'zbirenbaum/copilot.lua'
+  use 'stevearc/dressing.nvim' -- for enhanced input UI
+  use 'folke/snacks.nvim'      -- for modern input UI
+
+  -- Avante.nvim with build process
+  use {
+    'yetone/avante.nvim',
+    branch = 'main',
+    run = 'make',
+    config = function()
+      require('avante').setup()
+    end
+  }
+end)

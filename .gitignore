@@ -2,3 +2,4 @@ compose.yaml
 workdirs.txt
 node_modules
 .DS_Store
+.env
