@@ -22,11 +22,22 @@ done
 
 cd "$DEV_DIR"
 
-# Run docker compose with or without --build flag
 if [ -n "$BUILD_FLAG" ]; then
     echo "Building and starting containers..."
+    # Store current image ID before building
+    OLD_IMAGE_ID=$(docker images vimdev-debian:latest -q)
+    
     docker compose build
     docker compose up -d
+    
+    # Remove the old image if it exists and is different from current
+    if [ -n "$OLD_IMAGE_ID" ]; then
+        CURRENT_IMAGE_ID=$(docker images vimdev-debian:latest -q)
+        if [ "$OLD_IMAGE_ID" != "$CURRENT_IMAGE_ID" ]; then
+            echo "Removing old vimdev-debian image: $OLD_IMAGE_ID"
+            docker rmi "$OLD_IMAGE_ID" 2>/dev/null || echo "Old image already removed or in use"
+        fi
+    fi
 else
     docker compose up -d
 fi
