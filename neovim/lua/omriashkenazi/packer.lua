@@ -40,7 +40,7 @@ return require('packer').startup(function(use)
 
   use({
     'saghen/blink.cmp',
-    requires = { 'rafamadriz/friendly-snippets', 'Kaiser-Yang/blink-cmp-avante', }, -- optional snippets
+    requires = { 'rafamadriz/friendly-snippets', 'Kaiser-Yang/blink-cmp-avante' }, -- optional snippets
     config = function()
       require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -54,20 +54,18 @@ return require('packer').startup(function(use)
           implementation = "prefer_rust_with_warning",
         },
         sources = {
-          default = { 'avante', 'lsp', 'path', 'luasnip', 'buffer' },
+          default = { 'avante', 'lsp', 'path', 'snippets', 'buffer' },
           providers = {
             avante = {
               module = 'blink-cmp-avante',
               name = 'Avante',
-              opts = {
-                -- options for blink-cmp-avante
-              }
-            }
+            },
           }
         }
       })
     end
   })
+
   use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
 
   use { 'WhoIsSethDaniel/mason-tool-installer.nvim' }
@@ -80,7 +78,6 @@ return require('packer').startup(function(use)
   }
 
   -- Required plugins
-  use 'nvim-lua/plenary.nvim'
   use 'MunifTanjim/nui.nvim'
   use 'MeanderingProgrammer/render-markdown.nvim'
 
@@ -96,7 +93,7 @@ return require('packer').startup(function(use)
   use {
     'yetone/avante.nvim',
     branch = 'main',
-    run = 'make',
+    run = "make",
     config = function()
       require('avante').setup()
     end

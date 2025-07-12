@@ -39,3 +39,14 @@ vim.lsp.enable('lua_ls')
 
 -- ts_ls
 vim.lsp.enable('ts_ls')
+
+-- rust_analyzer
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ['rust-analyzer'] = {
+      diagnostics = {
+        enable = false,
+      }
+    }
+  }
+})

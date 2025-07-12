@@ -1,9 +1,9 @@
 export PATH="/usr/local/bin:$PATH"
 export USER=$(whoami)
 
-export DEV_DIR="$HOME/VimDev"
-
 PS1='\w '
+
+export DEV_DIR="/root/.ovim"
 
 alias gs='git status'
 alias ga='git add'
@@ -16,7 +16,7 @@ alias v='nvim'
 alias c='clear'
 alias ta='tmux a -t'
 alias t='tmux'
-alias localSync="$DEV_DIR/neovim/localSync.sh"
+alias localSync="/root/.ovim/neovim/localSync.sh"
 alias 'docker-compose'="/root/.config/customCompose.sh"
 
 docker() {

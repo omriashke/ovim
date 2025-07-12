@@ -4,7 +4,7 @@ set -euo pipefail
 
 apt update
 
-apt install -y make cmake build-essential
+apt install -y curl make cmake build-essential
 
 git clone --depth=1 --branch stable https://github.com/neovim/neovim
 

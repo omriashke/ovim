@@ -8,11 +8,12 @@ services:
     volumes:
       - ~/.ssh:/root/.ssh:ro
       - ~/.gitconfig:/root/.gitconfig
+      - ~/.ovim:/root/.ovim
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - tmux_resurrect:/root/.tmux/resurrect
       - /var/run/docker.sock:/var/run/docker.sock
       - ./compose/workdirs.txt:/root/.config/workdirs.txt
+      - tmux_resurrect:/root/.tmux/resurrect
     stdin_open: true
     tty: true
 

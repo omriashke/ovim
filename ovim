@@ -20,6 +20,9 @@ case "$1" in
         shift # Remove 'start' from arguments
         "$OVIM_DIR/compose/start.sh" "$@"
         ;;
+    "localSync")
+        "$OVIM_DIR/neovim/localSync.sh" "$@"
+        ;;
     *)
         echo "Usage: ovim {add|remove|list|down|start} [options]"
         echo "  add [path]              - Add a path"

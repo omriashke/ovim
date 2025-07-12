@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 apt update
 
-apt install -y ninja-build gettext make cmake curl build-essential ripgrep fd-find
+apt install -y ninja-build gettext make cmake build-essential ripgrep fd-find
 
 # Install NVM
 export NVM_DIR="$HOME/.nvm"
@@ -31,3 +31,7 @@ ln -s /opt/tree-sitter/target/release/tree-sitter /usr/local/bin/tree-sitter
 cd /root/.local/share/nvim/site/pack/packer/start/blink.cmp
 
 cargo build --release
+
+cd /root/.local/share/nvim/site/pack/packer/start/avante.nvim
+
+make
