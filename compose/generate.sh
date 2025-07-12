@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 # Read working directories from file
 WORKDIR_FILE="$DEV_DIR/compose/workdirs.txt"
