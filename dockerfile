@@ -62,7 +62,7 @@ COPY .bashrc /root/.bashrc
 
 SHELL ["/bin/bash", "-c"]
 
-ENV TERM xterm-256color
+ENV TERM=xterm-256color
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
