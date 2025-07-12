@@ -1,7 +1,0 @@
-export DEV_DIR="/Users/omriashkenazi/desktop/development/VimDev"
-alias start="$DEV_DIR/compose/start.sh"
-alias down="$DEV_DIR/compose/down.sh"
-alias add="$DEV_DIR/compose/add.sh"
-alias remove="$DEV_DIR/compose/remove.sh"
-alias ls="$DEV_DIR/compose/ls.sh"
-alias t='tmux -f ~/desktop/development/vimDev/tmux/tmux.conf'

@@ -2,7 +2,8 @@ services:
   debian:
     build:
       context: .
-    image: vimdev-debian:latest
+    image: vimdev-debian
+    pull_policy: never
     network_mode: host
     volumes:
       - ~/.ssh:/root/.ssh:ro
@@ -14,8 +15,6 @@ services:
       - ./compose/workdirs.txt:/root/.config/workdirs.txt
     stdin_open: true
     tty: true
-    extra_hosts:
-      - platform-local.getruck.co.il:127.0.0.1
 
 volumes:
   tmux_resurrect:

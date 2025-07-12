@@ -56,11 +56,9 @@ RUN apt update && apt install -y bash locales && \
     sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen && \
     locale-gen
 
-COPY .bashrc /root/.bashrc
-
 COPY .env /root/.env
 
-RUN source /root/.env
+COPY .bashrc /root/.bashrc
 
 SHELL ["/bin/bash", "-c"]
 

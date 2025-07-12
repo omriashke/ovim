@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+OVIM_DIR="$HOME/.ovim"
+export DEV_DIR="$OVIM_DIR"
+
+case "$1" in
+    "add")
+        "$OVIM_DIR/compose/add.sh" "$2"
+        ;;
+    "remove")
+        "$OVIM_DIR/compose/remove.sh" "$2"
+        ;;
+    "list")
+        "$OVIM_DIR/compose/list.sh"
+        ;;
+    "down")
+        "$OVIM_DIR/compose/down.sh"
+        ;;
+    "start")
+        shift # Remove 'start' from arguments
+        "$OVIM_DIR/compose/start.sh" "$@"
+        ;;
+    *)
+        echo "Usage: ovim {add|remove|list|down|start} [options]"
+        echo "  add [path]              - Add a path"
+        echo "  remove [path]           - Remove a path" 
+        echo "  list                    - List all paths"
+        echo "  down                    - Remove container and clean all workdirs"
+        echo "  start [--build] [name]  - Start container and attach/create tmux session"
+        echo "                            --build: rebuild container before starting"
+        echo "                            name: tmux session name (optional)"
+        ;;
+esac

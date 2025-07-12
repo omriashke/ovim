@@ -22,6 +22,28 @@ done
 
 cd "$DEV_DIR"
 
+# Check if .env file exists, create it if it doesn't
+if [ ! -f ".env" ]; then
+    cat > .env << 'EOF'
+# Ovim Environment Configuration
+# 
+# Add your API keys and configurations here
+# 
+# ⚠️  WARNING: Be careful if you plan to push this repository!
+# This file may contain sensitive information that should not be shared publicly.
+# Consider adding .env to your .gitignore file.
+#
+# Examples:
+# API_KEY=your_api_key_here
+# DATABASE_URL=your_database_url
+# NODE_VERSION=18
+# PYTHON_VERSION=3.11
+# ANTHROPIC_API_KEY=your-claude-api-key
+# OPENAI_API_KEY=your-openai-api-key
+EOF
+    echo "Created .env file in $DEV_DIR"
+fi
+
 if [ -n "$BUILD_FLAG" ]; then
     echo "Building and starting containers..."
     # Store current image ID before building
