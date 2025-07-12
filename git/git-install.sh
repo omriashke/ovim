@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-apt update 
+apt-get update 
 
-apt install -y git
+apt-get install -y git

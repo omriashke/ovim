@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-apt update
+apt-get update
 
-apt install -y ninja-build gettext make cmake build-essential ripgrep fd-find
+apt-get install -y ninja-build gettext make cmake build-essential ripgrep fd-find
 
 # Install NVM
 export NVM_DIR="$HOME/.nvm"

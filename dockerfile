@@ -52,7 +52,7 @@ RUN chmod +x /root/.config/customCompose.sh
 
 WORKDIR /root
 
-RUN apt update && apt install -y bash locales && \
+RUN apt-get update && apt-get install -y bash locales && \
     sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen && \
     locale-gen
 

@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-apt update
+apt-get update
 
-apt install -y tmux
+apt-get install -y tmux
 
 mkdir -p ~/.tmux/plugins
 
