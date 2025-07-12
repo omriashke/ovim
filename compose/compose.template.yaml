@@ -6,6 +6,7 @@ services:
     network_mode: host
     volumes:
       - ~/.ssh:/root/.ssh:ro
+      - ~/.gitconfig:/root/.gitconfig
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - tmux_resurrect:/root/.tmux/resurrect
