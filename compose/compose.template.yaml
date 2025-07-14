@@ -15,8 +15,10 @@ services:
       - ./compose/workdirs.txt:/root/.config/workdirs.txt
       - ~/.ovim/.env:/root/.env:ro
       - tmux_resurrect:/root/.tmux/resurrect
+      - root_cache:/root/.cache
     stdin_open: true
     tty: true
 
 volumes:
   tmux_resurrect:
+  root_cache:
