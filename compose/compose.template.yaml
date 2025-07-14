@@ -13,6 +13,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ./compose/workdirs.txt:/root/.config/workdirs.txt
+      - ~/.ovim/.env:/root/.env:ro
       - tmux_resurrect:/root/.tmux/resurrect
     stdin_open: true
     tty: true
