@@ -16,6 +16,9 @@ case "$1" in
     "down")
         "$OVIM_DIR/compose/down.sh"
         ;;
+    "restart")
+        "$OVIM_DIR/compose/restart.sh"
+        ;;
     "start")
         shift # Remove 'start' from arguments
         "$OVIM_DIR/compose/start.sh" "$@"
