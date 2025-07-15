@@ -16,9 +16,11 @@ services:
       - ~/.ovim/.env:/root/.env:ro
       - tmux_resurrect:/root/.tmux/resurrect
       - root_cache:/root/.cache
+      - bash_history:/root/.bash_history
     stdin_open: true
     tty: true
 
 volumes:
   tmux_resurrect:
   root_cache:
+  bash_history:
