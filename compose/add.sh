@@ -11,6 +11,12 @@ fi
 # Define the workdirs file path
 WORKDIRS_FILE="$DEV_DIR/compose/workdirs.txt"
 
+# Check if it exists and is a directory, then remove it
+if [ -d "$WORKDIRS_FILE" ]; then
+    echo "Removing directory: $WORKDIRS_FILE"
+    rm -rf "$WORKDIRS_FILE"
+fi
+
 # Create the directory if it doesn't exist
 mkdir -p "$(dirname "$WORKDIRS_FILE")"
 

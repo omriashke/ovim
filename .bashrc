@@ -37,3 +37,10 @@ source /root/.env
 shopt -s histappend
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export HISTCONTROL=ignoredups:erasedups
+
+# Only run in interactive shell
+if [[ $- == *i* ]] && [[ -z "$IN_VIM_TERMINAL" ]]; then
+  export IN_VIM_TERMINAL=1
+  vim -c 'terminal' -c 'startinsert'
+  exit
+fi
