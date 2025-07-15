@@ -30,10 +30,6 @@ return require('packer').startup(function(use)
     requires = { { "nvim-lua/plenary.nvim" } }
   }
 
-  use { "mbbill/undotree" }
-
-  use { "tpope/vim-fugitive" }
-
   use { "neovim/nvim-lspconfig" }
 
   use { "mason-org/mason.nvim" }
@@ -66,7 +62,9 @@ return require('packer').startup(function(use)
     end
   })
 
-  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
+  use { 'mfussenegger/nvim-dap' }
+
+  use { 'theHamsta/nvim-dap-virtual-text' }
 
   use { 'WhoIsSethDaniel/mason-tool-installer.nvim' }
 
