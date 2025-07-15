@@ -6,5 +6,6 @@ require("mason-tool-installer").setup({
     "lua-language-server",
     "typescript-language-server",
     "js-debug-adapter",
+    "prisma-language-server",
   },
 })

@@ -50,3 +50,6 @@ vim.lsp.config('rust_analyzer', {
     }
   }
 })
+
+-- prismals
+vim.lsp.enable('prismals')
