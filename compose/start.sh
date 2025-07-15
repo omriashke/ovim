@@ -44,6 +44,10 @@ EOF
     echo "Created .env file in $DEV_DIR"
 fi
 
+if [ ! -f "compose.yaml" ]; then
+  cat "./compose/compose.template.yaml" > "compose.yaml"
+fi
+
 if [ -n "$BUILD_FLAG" ]; then
     echo "Building and starting containers..."
     # Store current image ID before building
