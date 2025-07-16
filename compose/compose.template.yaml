@@ -15,7 +15,7 @@ services:
       - ./compose/workdirs.txt:/root/.config/workdirs.txt:ro
       - ~/.ovim/.env:/root/.env:ro
       - tmux_resurrect:/root/.tmux/resurrect
-      - bash_history:/root/.bash_history
+      - bash_history:/root/.bash_history_data
     stdin_open: true
     tty: true
 

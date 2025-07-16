@@ -12,10 +12,7 @@ alias gd='git diff'
 alias gp='git push'
 alias ll='ls -lah'
 alias vim='nvim'
-alias v='nvim'
 alias c='clear'
-alias ta='tmux a -t'
-alias t='tmux'
 alias localSync="/root/.ovim/neovim/localSync.sh"
 alias 'docker-compose'="/root/.config/customCompose.sh"
 
@@ -34,6 +31,8 @@ export NVM_DIR="$HOME/.nvm"
 
 source /root/.env
 
+export HISTFILE=/root/.bash_history_data/bash_history
+
 shopt -s histappend
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export HISTCONTROL=ignoredups:erasedups
@@ -44,3 +43,12 @@ if [[ $- == *i* ]] && [[ -z "$IN_VIM_TERMINAL" ]]; then
   vim -c 'terminal' -c 'startinsert'
   exit
 fi
+
+cd() {
+    builtin cd "$@" && {
+        if [[ -n "$NVIM" ]]; then
+            # $NVIM contains the server address of the current instance
+            nvim --server "$NVIM" --remote-send "<C-\><C-n>:tcd $(pwd)<CR>i"
+        fi
+    }
+}

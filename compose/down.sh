@@ -17,8 +17,8 @@ fi
 
 COMPOSE_FILE="$DEV_DIR/compose.yaml"
 if [ -f "$COMPOSE_FILE" ]; then
-    rm "$COMPOSE_FILE"
-    echo "Removed compose file: $COMPOSE_FILE"
+    cat "$DEV_DIR/compose/compose.template.yaml" > "$COMPOSE_FILE"
+    echo "Reset compose file: $COMPOSE_FILE"
 fi
 
 WORKDIRS_FILE="$DEV_DIR/compose/workdirs.txt"
