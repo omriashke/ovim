@@ -20,8 +20,6 @@ COPY ./neovim/init.lua /root/.config/nvim/init.lua
 
 RUN nvim --headless -c "lua require('omriashkenazi.packer')" -c "autocmd User PackerComplete quitall" -c "PackerSync"
 
-RUN nvim --headless +"TSInstall rust javascript typescript html css python c lua bash" +qa
-
 COPY ./neovim/after /root/.config/nvim/after
 
 # dependecies
