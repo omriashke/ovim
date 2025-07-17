@@ -96,4 +96,6 @@ return require('packer').startup(function(use)
       require('avante').setup()
     end
   }
+
+  use 'eandrju/cellular-automaton.nvim'
 end)
