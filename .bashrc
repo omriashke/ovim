@@ -5,14 +5,7 @@ PS1='\w '
 
 export DEV_DIR="/root/.ovim"
 
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gd='git diff'
-alias gp='git push'
-alias ll='ls -lah'
 alias vim='nvim'
-alias c='clear'
 alias localSync="/root/.ovim/neovim/localSync.sh"
 alias 'docker-compose'="/root/.config/customCompose.sh"
 
