@@ -5,14 +5,7 @@ PS1='\w '
 
 export DEV_DIR="/root/.ovim"
 
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gd='git diff'
-alias gp='git push'
-alias ll='ls -lah'
 alias vim='nvim'
-alias c='clear'
 alias localSync="/root/.ovim/neovim/localSync.sh"
 alias 'docker-compose'="/root/.config/customCompose.sh"
 
@@ -48,7 +41,19 @@ cd() {
     builtin cd "$@" && {
         if [[ -n "$NVIM" ]]; then
             # $NVIM contains the server address of the current instance
-            nvim --server "$NVIM" --remote-send "<C-\><C-n>:tcd $(pwd)<CR>i"
+            /usr/local/bin/nvim --server "$NVIM" --remote-send "<C-\><C-n>:tcd $(pwd)<CR>i"
         fi
     }
 }
+
+nvim() {
+  if [[ -n "$NVIM" && -n "$1" ]]; then
+    local filepath
+    filepath=$(realpath "$1")
+    cd "$filepath"
+    /usr/local/bin/nvim --server "$NVIM" --remote-send "<C-\\><C-n>:e ${filepath//$'/'/\\/}<CR>"
+  else
+    /usr/local/bin/nvim "$@"
+  fi
+}
+

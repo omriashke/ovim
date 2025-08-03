@@ -7,5 +7,6 @@ require("mason-tool-installer").setup({
     "typescript-language-server",
     "js-debug-adapter",
     "prisma-language-server",
+    "tailwindcss-language-server",
   },
 })
