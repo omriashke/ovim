@@ -56,3 +56,6 @@ vim.lsp.enable('prismals')
 
 -- tailwindcss
 vim.lsp.enable('tailwindcss')
+
+-- jsonls
+vim.lsp.enable('jsonls')
