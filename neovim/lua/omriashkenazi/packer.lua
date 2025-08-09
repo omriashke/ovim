@@ -75,28 +75,6 @@ return require('packer').startup(function(use)
     end,
   }
 
-  -- Required plugins
-  use 'MunifTanjim/nui.nvim'
-  use 'MeanderingProgrammer/render-markdown.nvim'
-
-  -- Optional dependencies
-  use 'hrsh7th/nvim-cmp'
-  use 'echasnovski/mini.icons'
-  use 'HakonHarnes/img-clip.nvim'
-  use 'zbirenbaum/copilot.lua'
-  use 'stevearc/dressing.nvim' -- for enhanced input UI
-  use 'folke/snacks.nvim'      -- for modern input UI
-
-  -- Avante.nvim with build process
-  use {
-    'yetone/avante.nvim',
-    branch = 'main',
-    run = "make",
-    config = function()
-      require('avante').setup()
-    end
-  }
-
   use 'eandrju/cellular-automaton.nvim'
 
   use 'tidalcycles/vim-tidal'
