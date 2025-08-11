@@ -59,3 +59,6 @@ vim.lsp.enable('tailwindcss')
 
 -- jsonls
 vim.lsp.enable('jsonls')
+
+-- openTofu
+vim.lsp.enable('tofu_ls')

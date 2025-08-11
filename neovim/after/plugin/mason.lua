@@ -9,5 +9,6 @@ require("mason-tool-installer").setup({
     "prisma-language-server",
     "tailwindcss-language-server",
     "json-lsp",
+    "tofu-ls",
   },
 })
