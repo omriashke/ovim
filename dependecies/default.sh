@@ -3,7 +3,7 @@ set -euo pipefail
 
 apt-get update
 
-apt-get install -y ninja-build gettext make cmake build-essential ripgrep fd-find
+apt-get install -y ninja-build gettext make cmake build-essential ripgrep fd-find jq
 
 # Install NVM
 export NVM_DIR="$HOME/.nvm"
@@ -32,6 +32,11 @@ cd /root/.local/share/nvim/site/pack/packer/start/blink.cmp
 
 cargo build --release
 
-cd /root/.local/share/nvim/site/pack/packer/start/avante.nvim
+# Install OpenTofu
+curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
 
-make
+chmod +x install-opentofu.sh
+
+./install-opentofu.sh --install-method deb
+
+rm -f install-opentofu.sh

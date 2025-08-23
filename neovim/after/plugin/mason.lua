@@ -8,5 +8,7 @@ require("mason-tool-installer").setup({
     "js-debug-adapter",
     "prisma-language-server",
     "tailwindcss-language-server",
+    "json-lsp",
+    "tofu-ls",
   },
 })

@@ -54,7 +54,7 @@ if [ -n "$BUILD_FLAG" ]; then
     OLD_IMAGE_ID=$(docker images vimdev-debian:latest -q)
     
     docker compose build
-    docker compose up -d
+    docker compose up
     
     # Remove the old image if it exists and is different from current
     if [ -n "$OLD_IMAGE_ID" ]; then
@@ -65,7 +65,7 @@ if [ -n "$BUILD_FLAG" ]; then
         fi
     fi
 else
-    docker compose up -d
+    docker compose up
 fi
 
 echo "Executing into debian container..."

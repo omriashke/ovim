@@ -2,6 +2,6 @@ require 'nvim-treesitter'.setup {
   -- Directory to install parsers and queries to
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
-require 'nvim-treesitter'.install { 'rust', 'javascript', 'typescript', 'cpp', 'html', 'css', 'python', 'c', 'lua', 'bash' }
+require 'nvim-treesitter'.install { 'rust', 'javascript', 'typescript', 'cpp', 'html', 'css', 'python', 'c', 'lua', 'bash', 'JSON', 'hcl' }
 
 require 'treesitter-context'.setup()
