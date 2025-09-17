@@ -1,16 +1,11 @@
-FROM debian:12
+FROM debian:bookworm-slim
 
 WORKDIR /tmp
 
-# git
-COPY ./git/git-install.sh ./git-install.sh
+# dependecies
+COPY ./dependecies/install.sh ./install.sh
 
-RUN chmod +x ./git-install.sh && ./git-install.sh
-
-# neovim
-COPY ./neovim/neovim-install.sh ./neovim-install.sh
-
-RUN chmod +x ./neovim-install.sh && ./neovim-install.sh
+RUN chmod +x ./install.sh && ./install.sh
 
 RUN mkdir -p /root/.config/nvim
 
@@ -22,28 +17,19 @@ RUN nvim --headless -c "lua require('omriashkenazi.packer')" -c "autocmd User Pa
 
 COPY ./neovim/after /root/.config/nvim/after
 
-# dependecies
-COPY ./dependecies/default.sh ./default.sh
-
-RUN chmod +x ./default.sh && ./default.sh
-
-# docker
-COPY ./docker/docker-install.sh ./docker-install.sh
-
-RUN chmod +x ./docker-install.sh && ./docker-install.sh
-
 # tmux
 RUN mkdir -p /root/.config/tmux
-
-COPY ./tmux/tmux-install.sh ./tmux-install.sh
-
-RUN chmod +x ./tmux-install.sh && ./tmux-install.sh
 
 COPY tmux/tmux.conf /root/.config/tmux/tmux.conf
 
 RUN /root/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 RUN find /tmp -mindepth 1 -delete
+
+# build
+COPY ./dependecies/build.sh ./build.sh
+
+RUN chmod +x ./build.sh && ./build.sh
 
 # app integrations
 COPY ./compose/customCompose.sh /root/.config/customCompose.sh
