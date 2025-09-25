@@ -1,39 +1,72 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Check for --build flag
-BUILD_FLAG=""
-SESSION_NAME=""
+# --- Config -------------------------------------------------------------------
+# Defaults (override via flags or env)
+IMAGE_REPO="${IMAGE_REPO:-omriashkenazi/ovim}"
+IMAGE_TAG="${IMAGE_TAG:-1.1.0}"
+SERVICE_NAME="${SERVICE_NAME:-debian}"
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yaml}"
 
-# Parse arguments
+# Requires DEV_DIR in env
+: "${DEV_DIR:?DEV_DIR must be set (path to your project root)}"
+
+# --- Flags --------------------------------------------------------------------
+BUILD_MODE="prebuilt"   # "prebuilt" (default) or "build"
+DO_PULL="false"
+SESSION_NAME=""
+CUSTOM_TAG=""
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [--build] [--pull] [--tag <tag>] [session-name]
+
+Modes:
+  (default)    Use prebuilt image "${IMAGE_REPO}:${IMAGE_TAG}" and start containers.
+  --build      Build locally with docker compose, then start containers.
+  --pull       In prebuilt mode, pull the image before starting.
+  --tag <tag>  Override image tag (e.g. --tag 1.2.3 or --tag latest).
+
+Examples:
+  $(basename "$0")                    # prebuilt, no pull
+  $(basename "$0") --pull             # prebuilt, pull latest tag first
+  $(basename "$0") --tag latest       # prebuilt, use :latest
+  $(basename "$0") --build            # build locally
+  $(basename "$0") my-session         # prebuilt, then tmux attach/create 'my-session'
+EOF
+}
+
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        --build)
-            BUILD_FLAG="--build"
-            shift
-            ;;
-        *)
-            # If it's not --build, treat it as session name
-            SESSION_NAME="$1"
-            shift
-            ;;
-    esac
+  case "$1" in
+    -h|--help)
+      usage; exit 0;;
+    --build)
+      BUILD_MODE="build"; shift;;
+    --pull)
+      DO_PULL="true"; shift;;
+    --tag)
+      CUSTOM_TAG="${2:-}"; shift 2;;
+    *)
+      # Everything else is interpreted as the tmux session name
+      SESSION_NAME="$1"; shift;;
+  esac
 done
 
+if [[ -n "${CUSTOM_TAG}" ]]; then
+  IMAGE_TAG="${CUSTOM_TAG}"
+fi
+
+IMAGE="${IMAGE_REPO}:${IMAGE_TAG}"
+
+# --- Ensure project files exist ----------------------------------------------
 cd "$DEV_DIR"
 
-# Check if .env file exists, create it if it doesn't
-if [ ! -f ".env" ]; then
-    cat > .env << 'EOF'
+# Create a local .env scaffold if missing (used by your dev repo itself)
+if [[ ! -f ".env" ]]; then
+  cat > .env << 'EOF'
 # Ovim Environment Configuration
-# 
 # Add your API keys and configurations here
-# 
-# ⚠️  WARNING: Be careful if you plan to push this repository!
-# This file may contain sensitive information that should not be shared publicly.
-# Consider adding .env to your .gitignore file.
-#
-# Examples:
+# ⚠️ WARNING: This file may contain secrets. Add to .gitignore if needed.
 # API_KEY=your_api_key_here
 # DATABASE_URL=your_database_url
 # NODE_VERSION=18
@@ -41,64 +74,80 @@ if [ ! -f ".env" ]; then
 # ANTHROPIC_API_KEY=your-claude-api-key
 # OPENAI_API_KEY=your-openai-api-key
 EOF
-    echo "Created .env file in $DEV_DIR"
+  echo "Created .env file in $DEV_DIR"
 fi
 
-if [ ! -f "compose.yaml" ]; then
-  cat "./compose/compose.template.yaml" > "compose.yaml"
+# Compose file bootstrap (if you rely on a template)
+if [[ ! -f "${COMPOSE_FILE}" ]]; then
+  if [[ -f "./compose/compose.template.yaml" ]]; then
+    cp "./compose/compose.template.yaml" "${COMPOSE_FILE}"
+  fi
 fi
 
-if [ -n "$BUILD_FLAG" ]; then
-    echo "Building and starting containers..."
-    # Store current image ID before building
-    OLD_IMAGE_ID=$(docker images vimdev-debian:latest -q)
-    
-    docker compose build
-    docker compose up -d
-    
-    # Remove the old image if it exists and is different from current
-    if [ -n "$OLD_IMAGE_ID" ]; then
-        CURRENT_IMAGE_ID=$(docker images vimdev-debian:latest -q)
-        if [ "$OLD_IMAGE_ID" != "$CURRENT_IMAGE_ID" ]; then
-            echo "Removing old vimdev-debian image: $OLD_IMAGE_ID"
-            docker rmi "$OLD_IMAGE_ID" 2>/dev/null || echo "Old image already removed or in use"
-        fi
+# --- Start containers ---------------------------------------------------------
+if [[ "${BUILD_MODE}" == "build" ]]; then
+  echo "Mode: local build (compose build && up -d)"
+
+  # Track old image to clean up only if the tag is vimdev-debian:latest (legacy path)
+  OLD_IMAGE_ID="$(docker images vimdev-debian:latest -q || true)"
+
+  docker compose -f "${COMPOSE_FILE}" build --pull
+  docker compose -f "${COMPOSE_FILE}" up -d
+
+  if [[ -n "${OLD_IMAGE_ID}" ]]; then
+    CURRENT_IMAGE_ID="$(docker images vimdev-debian:latest -q || true)"
+    if [[ -n "${CURRENT_IMAGE_ID}" && "${OLD_IMAGE_ID}" != "${CURRENT_IMAGE_ID}" ]]; then
+      echo "Removing old vimdev-debian image: ${OLD_IMAGE_ID}"
+      docker rmi "${OLD_IMAGE_ID}" 2>/dev/null || echo "Old image already removed or in use"
     fi
+  fi
+
 else
-    docker compose up -d
+  echo "Mode: prebuilt image (${IMAGE})"
+
+  # If requested (or image missing), pull the prebuilt image.
+  if [[ "${DO_PULL}" == "true" ]]; then
+    echo "Pulling image: ${IMAGE}"
+    docker pull "${IMAGE}"
+  else
+    if ! docker image inspect "${IMAGE}" >/dev/null 2>&1; then
+      echo "Image ${IMAGE} not found locally; pulling..."
+      docker pull "${IMAGE}"
+    fi
+  fi
+
+  # IMPORTANT: because your compose file contains both 'build:' and 'image:',
+  # we must ensure compose does NOT build in prebuilt mode:
+  docker compose -f "${COMPOSE_FILE}" up -d --no-build
+
+  # Optionally ensure the running service matches the requested tag
+  echo "Ensured ${SERVICE_NAME} is up using ${IMAGE}"
 fi
 
-echo "Executing into debian container..."
+echo "Executing into ${SERVICE_NAME} container..."
 
-# Check if session name was provided as argument
-if [ -z "$SESSION_NAME" ]; then
-    # No session name provided - find the most recent session or use default
-    echo "No session name provided, checking for existing sessions..."
-    
-    docker compose exec debian bash -c "
-        # Get list of sessions, most recent first
-        LATEST_SESSION=\$(tmux list-sessions -F '#{session_last_attached} #{session_name}' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2)
-        
-        if [ -n \"\$LATEST_SESSION\" ]; then
-            echo 'Attaching to most recent session: '\$LATEST_SESSION
-            tmux attach-session -t \"\$LATEST_SESSION\"
-        else
-            echo 'No existing sessions found, creating default session: develop'
-            tmux new-session -s 'develop' 'bash'
-        fi
-    "
+# --- tmux session handling ----------------------------------------------------
+if [[ -z "${SESSION_NAME}" ]]; then
+  echo "No session name provided, checking for existing sessions..."
+  docker compose exec "${SERVICE_NAME}" bash -c "
+    LATEST_SESSION=\$(tmux list-sessions -F '#{session_last_attached} #{session_name}' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2)
+    if [[ -n \"\$LATEST_SESSION\" ]]; then
+      echo 'Attaching to most recent session: '\"\$LATEST_SESSION\"
+      tmux attach-session -t \"\$LATEST_SESSION\"
+    else
+      echo 'No existing sessions found, creating default session: develop'
+      tmux new-session -s 'develop' 'bash'
+    fi
+  "
 else
-    # Session name provided as argument
-    echo "Session: $SESSION_NAME"
-    
-    # Check if session exists and attach or create accordingly
-    docker compose exec debian bash -c "
-        if tmux has-session -t '$SESSION_NAME' 2>/dev/null; then
-            echo 'Attaching to existing session: $SESSION_NAME'
-            tmux attach-session -t '$SESSION_NAME'
-        else
-            echo 'Creating new session: $SESSION_NAME'
-            tmux new-session -s '$SESSION_NAME' 'bash'
-        fi
-    "
+  echo "Session: ${SESSION_NAME}"
+  docker compose exec "${SERVICE_NAME}" bash -c "
+    if tmux has-session -t '${SESSION_NAME}' 2>/dev/null; then
+      echo 'Attaching to existing session: ${SESSION_NAME}'
+      tmux attach-session -t '${SESSION_NAME}'
+    else
+      echo 'Creating new session: ${SESSION_NAME}'
+      tmux new-session -s '${SESSION_NAME}' 'bash'
+    fi
+  "
 fi

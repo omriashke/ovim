@@ -36,7 +36,8 @@ return require('packer').startup(function(use)
 
   use({
     'saghen/blink.cmp',
-    requires = { 'rafamadriz/friendly-snippets', 'Kaiser-Yang/blink-cmp-avante' }, -- optional snippets
+    requires = { 'rafamadriz/friendly-snippets' }, -- optional snippets
+    tag = 'v1.*',
     config = function()
       require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -47,16 +48,7 @@ return require('packer').startup(function(use)
           documentation = { auto_show = true },
         },
         fuzzy = {
-          implementation = "prefer_rust_with_warning",
-        },
-        sources = {
-          default = { 'avante', 'lsp', 'path', 'snippets', 'buffer' },
-          providers = {
-            avante = {
-              module = 'blink-cmp-avante',
-              name = 'Avante',
-            },
-          }
+          implementation = "prefer_rust",
         }
       })
     end
