@@ -36,22 +36,31 @@ return require('packer').startup(function(use)
 
   use({
     'saghen/blink.cmp',
-    requires = { 'rafamadriz/friendly-snippets' }, -- optional snippets
-    tag = 'v1.*',
+    tag = 'v1.7.0', -- use an exact release tag with prebuilt binaries
+    requires = { 'rafamadriz/friendly-snippets' },
     config = function()
       require('blink.cmp').setup({
         keymap = { preset = 'default' },
+
         appearance = {
           nerd_font_variant = 'mono',
         },
+
         completion = {
           documentation = { auto_show = true },
         },
+
         fuzzy = {
+          -- Try Rust first, but silently revert to Lua if missing
           implementation = "prefer_rust",
-        }
+
+          prebuilt_binaries = {
+            download = true,
+            force_version = 'v1.7.0', -- must match the tag above
+          },
+        },
       })
-    end
+    end,
   })
 
   use { 'mfussenegger/nvim-dap' }
@@ -70,4 +79,13 @@ return require('packer').startup(function(use)
   use 'eandrju/cellular-automaton.nvim'
 
   use 'tidalcycles/vim-tidal'
+
+  use({
+    'MeanderingProgrammer/render-markdown.nvim',
+    after = { 'nvim-treesitter' },
+    requires = { 'nvim-mini/mini.nvim', opt = true },
+    config = function()
+      require('render-markdown').setup({})
+    end,
+  })
 end)

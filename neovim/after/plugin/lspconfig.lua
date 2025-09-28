@@ -45,11 +45,19 @@ vim.lsp.config('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
       diagnostics = {
-        enable = false,
+        enable = true,
+      },
+      cargo = {
+        allFeatures = true,
+      },
+      check = {
+        command = "clippy",
       }
     }
   }
 })
+
+vim.lsp.enable('rust_analyzer')
 
 -- prismals
 vim.lsp.enable('prismals')
