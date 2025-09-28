@@ -80,10 +80,13 @@ return require('packer').startup(function(use)
 
   use 'tidalcycles/vim-tidal'
 
+  -- Icon provider for render-markdown
+  use 'nvim-tree/nvim-web-devicons'
+
   use({
     'MeanderingProgrammer/render-markdown.nvim',
     after = { 'nvim-treesitter' },
-    requires = { 'nvim-mini/mini.nvim', opt = true },
+    requires = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('render-markdown').setup({})
     end,
