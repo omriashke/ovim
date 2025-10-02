@@ -45,3 +45,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { noremap = true, silent = true })
+
+-- Markdown preview
+vim.keymap.set('n', '<leader>md', '<cmd>MarkdownPreview<CR>', { desc = 'Open markdown preview' })
